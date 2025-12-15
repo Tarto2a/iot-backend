@@ -4,6 +4,9 @@ const cors = require('cors');
 const app = express();
 const PORT = 5000;
 
+let doorCommand = "CLOSE";
+const DOOR_PASSWORD = "1234";
+
 app.use(cors());  // Enable CORS for the frontend to access the backend
 
 let gasValue = 0;
@@ -25,6 +28,22 @@ app.post('/api/update-sensor-data', express.json(), (req, res) => {
   isDark = dark;
 
   res.status(200).send('Sensor data updated');
+});
+
+app.post("/api/open-door", (req, res) => {
+  const { password } = req.body;
+
+  if (password === DOOR_PASSWORD) {
+    doorCommand = "OPEN";
+    return res.json({ success: true, message: "Door opening" });
+  }
+
+  res.status(401).json({ success: false, message: "Wrong password" });
+});
+
+app.get("/api/door-command", (req, res) => {
+  res.json({ command: doorCommand });
+  doorCommand = "CLOSE"; // reset بعد التنفيذ
 });
 
 app.listen(PORT, () => {
