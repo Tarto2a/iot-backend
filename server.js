@@ -5,7 +5,7 @@ const app = express();
 const PORT = 5000;
 
 let doorCommand = "CLOSE";
-const DOOR_PASSWORD = "1234";
+const DOOR_PASSWORD = "2003";
 
 app.use(cors());  // Enable CORS for the frontend to access the backend
 
